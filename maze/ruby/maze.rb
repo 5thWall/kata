@@ -12,7 +12,8 @@ DIRS = [
 # Both width and height should be odd
 @height = 15
 @width = 31
-@maze = [( [WALL] * @width)] * @height
+@maze = []
+@height.times { @maze << ( [WALL] * @width) }
 
 start_y = Random.rand(1...@height)
 start_x = Random.rand(1...@width)
