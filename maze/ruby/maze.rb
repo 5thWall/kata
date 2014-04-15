@@ -10,8 +10,8 @@ DIRS = [
 ]
 
 # Both width and height should be odd
-@height = 15
-@width = 31
+@height = 35
+@width = 51
 @maze = []
 @height.times { @maze << ( [WALL] * @width) }
 
