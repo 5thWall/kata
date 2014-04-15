@@ -15,34 +15,39 @@ DIRS = [
 @maze = []
 @height.times { @maze << ( [WALL] * @width) }
 
-start_y = Random.rand(1...@height)
-start_x = Random.rand(1...@width)
+def visit(y, x, dir = { cell_y: 0, cell_x: 0 })
+  y, x = get_cell_loc(y, x, dir)
 
-def visit(y, x)
   @maze[y][x] = ' '
 
   DIRS.shuffle.each do |dir|
     if get_neighbor(y, x, dir) == WALL
       remove_wall(y, x, dir)
-      visit(y, x)
+      visit(y, x, dir)
     end
   end
 end
 
 def get_neighbor(y, x, dir)
-  new_y = y + dir[:cell_y]
-  new_x = x + dir[:cell_x]
+  y, x = get_cell_loc(y, x, dir)
 
-  return nil unless in_maze(new_y, new_x)
-  @maze[new_y][new_x]
+  return nil unless in_maze(y, x)
+  @maze[y][x]
 end
 
 def remove_wall(y, x, dir)
-  wall_y = y + dir[:wall_y]
-  wall_x = x + dir[:wall_x]
+  wall_y, wall_x = get_wall_loc(y, x, dir)
 
   return unless in_maze(wall_y, wall_x)
   @maze[wall_y][wall_x] = ' '
+end
+
+def get_cell_loc(y, x, dir)
+  [y + dir[:cell_y], x + dir[:cell_x]]
+end
+
+def get_wall_loc(y, x, dir)
+  [y + dir[:wall_y], x + dir[:wall_x]]
 end
 
 def in_maze(y, x)
@@ -55,5 +60,5 @@ def print_maze
   end
 end
 
-visit(start_y, start_x)
+visit(1, 1)
 print_maze
